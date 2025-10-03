@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\GenreController;
 use BaseApi\App;
 use App\Controllers\HealthController;
 use App\Controllers\LoginController;
@@ -11,6 +12,16 @@ use BaseApi\Http\Middleware\RateLimitMiddleware;
 use App\Middleware\CombinedAuthMiddleware;
 
 $router = App::router();
+
+
+$router->get(
+    '/genre/{genre}',
+    [
+        RateLimitMiddleware::class => ['limit' => '30/1m'],
+        GenreController::class,
+    ],
+);
+
 
 $router->get('/health', [
     RateLimitMiddleware::class => ['limit' => '60/1m'],
