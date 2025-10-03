@@ -54,6 +54,42 @@
             "table": "jobs",
             "operation": "create_table",
             "description": "Create jobs table and indexes for queue system"
+        },
+        {
+            "id": "mig_ec74db7b72be",
+            "sql": "CREATE TABLE \"watch_item\" (\n  \"title\" TEXT NOT NULL,\n  \"type\" TEXT NOT NULL,\n  \"description\" TEXT,\n  \"release_year\" INTEGER,\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:57:58+00:00",
+            "table": "watch_item",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_1855dd2a5857",
+            "sql": "CREATE INDEX \"idx_watch_item_title\" ON \"watch_item\" (\"title\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:57:58+00:00",
+            "table": "watch_item",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1ec218d8b957",
+            "sql": "CREATE INDEX \"idx_watch_item_type\" ON \"watch_item\" (\"type\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:57:58+00:00",
+            "table": "watch_item",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b0e5c4b70a4e",
+            "sql": "CREATE INDEX \"idx_watch_item_release_year\" ON \"watch_item\" (\"release_year\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:57:58+00:00",
+            "table": "watch_item",
+            "operation": "add_index",
+            "warning": null
         }
     ]
 }
