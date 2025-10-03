@@ -117,6 +117,96 @@
             "table": "watch_item_genre",
             "operation": "add_index",
             "warning": null
+        },
+        {
+            "id": "mig_ea92e20e92aa",
+            "sql": "CREATE TABLE \"watch_item_season\" (\n  \"watch_item_id\" TEXT NOT NULL,\n  \"season_number\" INTEGER NOT NULL,\n  \"description\" TEXT,\n  \"release_year\" INTEGER,\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (\"watch_item_id\") REFERENCES \"watch_item\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:08+00:00",
+            "table": "watch_item_season",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_b36638564c19",
+            "sql": "CREATE INDEX \"idx_watch_item_season_watch_item_id\" ON \"watch_item_season\" (\"watch_item_id\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:08+00:00",
+            "table": "watch_item_season",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_42d1750c2d4c",
+            "sql": "CREATE INDEX \"idx_watch_item_season_season_number\" ON \"watch_item_season\" (\"season_number\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:08+00:00",
+            "table": "watch_item_season",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_4408e0ead00e",
+            "sql": "CREATE INDEX \"idx_watch_item_season_release_year\" ON \"watch_item_season\" (\"release_year\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:08+00:00",
+            "table": "watch_item_season",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b8b7b35775e0",
+            "sql": "CREATE TABLE \"watch_item_episode\" (\n  \"watch_item_season_id\" TEXT NOT NULL,\n  \"episode_number\" INTEGER NOT NULL,\n  \"title\" TEXT,\n  \"description\" TEXT,\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (\"watch_item_season_id\") REFERENCES \"watch_item_season\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:45+00:00",
+            "table": "watch_item_episode",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_f1596b73dbcc",
+            "sql": "CREATE INDEX \"idx_watch_item_episode_watch_item_season_id\" ON \"watch_item_episode\" (\"watch_item_season_id\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:45+00:00",
+            "table": "watch_item_episode",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_1c93f5ff5b8b",
+            "sql": "CREATE INDEX \"idx_watch_item_episode_episode_number\" ON \"watch_item_episode\" (\"episode_number\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:04:45+00:00",
+            "table": "watch_item_episode",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_541a8d5ff019",
+            "sql": "CREATE TABLE \"watch_item_movie\" (\n  \"watch_item_id\" TEXT NOT NULL,\n  \"director\" TEXT,\n  \"duration_minutes\" INTEGER,\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (\"watch_item_id\") REFERENCES \"watch_item\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:05:22+00:00",
+            "table": "watch_item_movie",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_ab900fa74e69",
+            "sql": "CREATE INDEX \"idx_watch_item_movie_watch_item_id\" ON \"watch_item_movie\" (\"watch_item_id\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:05:22+00:00",
+            "table": "watch_item_movie",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_4f1a1d4a52bd",
+            "sql": "CREATE INDEX \"idx_watch_item_movie_director\" ON \"watch_item_movie\" (\"director\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:05:22+00:00",
+            "table": "watch_item_movie",
+            "operation": "add_index",
+            "warning": null
         }
     ]
 }

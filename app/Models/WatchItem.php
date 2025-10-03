@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use BaseApi\Database\Relations\HasMany;
 use BaseApi\Models\BaseModel;
 
 /**
@@ -26,5 +27,15 @@ class WatchItem extends BaseModel
     public static array $columns = [
         'description' => ['type' => 'TEXT', 'null' => true],
     ];
+
+    public function movies(): HasMany
+    {
+        return $this->hasMany(WatchItemMovie::class);
+    }
+
+    public function seasons(): HasMany
+    {
+        return $this->hasMany(WatchItemSeason::class);
+    }
 }
 
