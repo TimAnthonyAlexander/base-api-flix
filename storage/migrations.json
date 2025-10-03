@@ -90,6 +90,33 @@
             "table": "watch_item",
             "operation": "add_index",
             "warning": null
+        },
+        {
+            "id": "mig_9da1573e949b",
+            "sql": "CREATE TABLE \"watch_item_genre\" (\n  \"name\" TEXT NOT NULL,\n  \"watch_item_id\" TEXT NOT NULL,\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (\"watch_item_id\") REFERENCES \"watch_item\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:59:14+00:00",
+            "table": "watch_item_genre",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_284ca69d8cee",
+            "sql": "CREATE INDEX \"idx_watch_item_genre_name\" ON \"watch_item_genre\" (\"name\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:59:14+00:00",
+            "table": "watch_item_genre",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_7ab9b126600c",
+            "sql": "CREATE INDEX \"idx_watch_item_genre_watch_item_id\" ON \"watch_item_genre\" (\"watch_item_id\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T17:59:14+00:00",
+            "table": "watch_item_genre",
+            "operation": "add_index",
+            "warning": null
         }
     ]
 }
