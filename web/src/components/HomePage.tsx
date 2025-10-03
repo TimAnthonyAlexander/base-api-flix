@@ -4,6 +4,7 @@ import { Box, Typography, AppBar, Toolbar } from '@mui/material';
 import { useGetRecommendations, useGetGenreByGenre } from '../hooks';
 import GenreSelector from './GenreSelector';
 import HorizontalSlider from './HorizontalSlider';
+import WatchItemCard from './WatchItemCard';
 import WatchItemModal from './WatchItemModal';
 import type { WatchItem } from '../types';
 
@@ -24,8 +25,8 @@ function HomePage() {
 
     let genres: Genre[] = [];
     if (selectedGenre) {
-        if (genreData?.data?.data) {
-            const items = Array.isArray(genreData.data.data) ? genreData.data.data : [genreData.data.data];
+        if (genreData?.data) {
+            const items = Array.isArray(genreData.data) ? genreData.data : [genreData.data];
             genres = [{ name: selectedGenre, items }];
         }
     } else {
@@ -42,7 +43,7 @@ function HomePage() {
     const handleCloseModal = () => setSelectedWatchItem(null);
 
     return (
-        <Box sx={{ bgcolor: '#000', color: '#e5e5e5', minHeight: '100vh' }}>
+        <Box sx={{ bgcolor: '#000', color: '#e5e5e5', minHeight: '100vh', width: '100%' }}>
             <AppBar
                 position="fixed"
                 elevation={0}

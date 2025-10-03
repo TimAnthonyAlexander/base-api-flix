@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use BaseApi\Models\BaseModel;
 use App\Models\WatchItem;
 use App\Models\WatchItemGenre;
 use BaseApi\Controllers\Controller;
@@ -25,7 +26,7 @@ class GenreController extends Controller
             assert($genreItem instanceof WatchItemGenre);
             $watchItem = $genreItem->watchItem()->get();
 
-            if ($watchItem) {
+            if ($watchItem instanceof BaseModel) {
                 $watchItems[] = $watchItem;
             }
         }
