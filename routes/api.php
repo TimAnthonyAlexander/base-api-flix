@@ -8,11 +8,19 @@ use App\Controllers\LogoutController;
 use App\Controllers\MeController;
 use App\Controllers\SignupController;
 use App\Controllers\OpenApiController;
+use App\Controllers\RecommendationsController;
 use BaseApi\Http\Middleware\RateLimitMiddleware;
 use App\Middleware\CombinedAuthMiddleware;
 
 $router = App::router();
 
+$router->get(
+    '/recommendations',
+    [
+        RateLimitMiddleware::class => ['limit' => '20/1m'],
+        RecommendationsController::class,
+    ],
+);
 
 $router->get(
     '/genre/{genre}',

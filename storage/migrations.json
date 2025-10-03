@@ -225,6 +225,24 @@
             "table": "watch_item_movie",
             "operation": "add_column",
             "warning": "Auto-generated default value '' for NOT NULL column without explicit default"
+        },
+        {
+            "id": "mig_fe3b96a98bfe",
+            "sql": "ALTER TABLE \"watch_item\" ADD COLUMN \"rating\" REAL NOT NULL DEFAULT '0'",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:24:09+00:00",
+            "table": "watch_item",
+            "operation": "add_column",
+            "warning": null
+        },
+        {
+            "id": "mig_541eda0148da",
+            "sql": "ALTER TABLE \"watch_item\" ADD COLUMN \"ratings_count\" INTEGER NOT NULL DEFAULT '0'",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:24:09+00:00",
+            "table": "watch_item",
+            "operation": "add_column",
+            "warning": null
         }
     ]
 }

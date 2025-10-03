@@ -18,6 +18,10 @@ class WatchItem extends BaseModel
 
     public ?int $release_year = null;
 
+    public float $rating = 0.0;
+
+    public int $ratings_count = 0;
+
     public static array $indexes = [
         'title' => 'index',
         'type' => 'index',

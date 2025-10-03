@@ -66,6 +66,8 @@ for ($i = 0; $i < $count; $i++) {
     $item->type = $isMovie ? 'movie' : 'series';
     $item->description = $faker->optional(0.7)->paragraph(random_int(1, 3)) ?? null;
     $item->release_year = $faker->optional(0.9)->numberBetween(1970, (int)date('Y')) ?? null;
+    $item->rating = $faker->optional(0.8)->randomFloat(1, 1, 10) ?? 0.0;
+    $item->ratings_count = $faker->optional(0.8)->numberBetween(1, 5000) ?? 0;
     $item->save();
 
     $created['items']++;
