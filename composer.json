@@ -36,8 +36,8 @@
         }
     },
     "scripts": {
-        "serve": "php mason serve",
-        "serve-screen": "screen -dmS flix php mason serve",
+        "serve-api": "screen -dmS flix-api php mason serve",
+        "serve-web": "cd web && screen -dmS flix-web npm run dev",
         "phpstan": "phpstan analyse --memory-limit=256M",
         "post-create-project-cmd": [
             "@php -r \"copy('.env.example', '.env');\"",
