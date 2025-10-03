@@ -79,38 +79,6 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                 />
 
                 {/* Title in corner (non-hover) */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        p: { xs: 1.5, sm: 2 },
-                        opacity: 1,
-                        transition: 'opacity 240ms',
-                        '.watch-item-card:hover &': {
-                            opacity: 0,
-                        },
-                    }}
-                >
-                    <Typography
-                        variant="body2"
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: { xs: '0.85rem', sm: '0.95rem' },
-                            lineHeight: 1.3,
-                            color: '#fff',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 1,
-                            WebkitBoxOrient: 'vertical',
-                            textShadow: '0 1px 4px rgba(0,0,0,0.8)',
-                        }}
-                    >
-                        {item.title}
-                    </Typography>
-                </Box>
 
                 {/* Dark overlay on hover to make text readable */}
                 <Box
