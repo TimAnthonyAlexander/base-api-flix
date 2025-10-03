@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use BaseApi\Database\Relations\BelongsTo;
+use BaseApi\Database\Relations\HasMany;
 use BaseApi\Models\BaseModel;
 
 /**
@@ -31,5 +32,10 @@ class WatchItemSeason extends BaseModel
     public function watchItem(): BelongsTo
     {
         return $this->belongsTo(WatchItem::class);
+    }
+
+    public function episodes(): HasMany
+    {
+        return $this->hasMany(WatchItemEpisode::class);
     }
 }

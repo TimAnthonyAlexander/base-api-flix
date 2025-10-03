@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -16,13 +16,16 @@ import {
   ListItemButton,
   ListItemText,
   Divider,
+  CircularProgress,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import MovieIcon from '@mui/icons-material/Movie';
 import TvIcon from '@mui/icons-material/Tv';
 import StarIcon from '@mui/icons-material/Star';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import type { WatchItem } from '../types';
+import { useGetWatchItemById } from '../hooks';
 
 interface WatchItemModalProps {
   open: boolean;
@@ -33,31 +36,39 @@ interface WatchItemModalProps {
 function WatchItemModal({ open, watchItem, onClose }: WatchItemModalProps) {
   const [selectedSeason, setSelectedSeason] = useState(1);
 
+  // Fetch full watch item details when modal opens
+  const { data: detailsData, loading: loadingDetails } = useGetWatchItemById(
+    { id: watchItem?.id || '' },
+    { enabled: open && !!watchItem?.id }
+  );
+
+  const details = detailsData?.data;
+
+  // Reset selected season when modal opens with a new item
+  useEffect(() => {
+    if (open && details?.seasons && details.seasons.length > 0) {
+      setSelectedSeason(details.seasons[0].season_number || 1);
+    }
+  }, [open, details?.id]);
+
   if (!watchItem) return null;
 
   const isMovie = watchItem.type === 'movie';
+  const seasons = details?.seasons || [];
+  const movies = details?.movies || [];
+  const currentSeason = seasons.find(s => s.season_number === selectedSeason);
+  const episodes = currentSeason?.episodes || [];
 
-  // Mock data for demonstration - in a real app, you'd fetch this from the API
-  const mockSeasons = isMovie ? [] : [
-    { number: 1, episodes: 10 },
-    { number: 2, episodes: 12 },
-    { number: 3, episodes: 8 },
-  ];
-
-  const mockEpisodes = Array.from({ length: mockSeasons.find(s => s.number === selectedSeason)?.episodes || 0 }, (_, i) => ({
-    number: i + 1,
-    title: `Episode ${i + 1}`,
-    description: 'Episode description goes here.',
-  }));
-
-  const handlePlayMovie = () => {
-    // In a real app, this would navigate to the movie player
-    console.log('Playing movie:', watchItem.id);
+  const handlePlayMovie = (filePath: string) => {
+    // In a real app, this would navigate to the movie player with the file path
+    console.log('Playing movie:', watchItem.id, 'File:', filePath);
+    alert(`Playing movie: ${filePath}\n(In a real app, this would open the video player)`);
   };
 
-  const handlePlayEpisode = (episodeNumber: number) => {
-    // In a real app, this would navigate to the episode player
-    console.log('Playing episode:', selectedSeason, episodeNumber);
+  const handlePlayEpisode = (filePath: string, episodeNumber: number) => {
+    // In a real app, this would navigate to the episode player with the file path
+    console.log('Playing episode:', selectedSeason, episodeNumber, 'File:', filePath);
+    alert(`Playing S${selectedSeason}E${episodeNumber}: ${filePath}\n(In a real app, this would open the video player)`);
   };
 
   return (
@@ -117,7 +128,7 @@ function WatchItemModal({ open, watchItem, onClose }: WatchItemModalProps) {
             {watchItem.title}
           </Typography>
 
-          <Box sx={{ display: 'flex', gap: 1.5, mb: 3 }}>
+          <Box sx={{ display: 'flex', gap: 1.5, mb: 3, flexWrap: 'wrap' }}>
             <Chip
               label={isMovie ? 'Movie' : 'Series'}
               icon={isMovie ? <MovieIcon /> : <TvIcon />}
@@ -145,6 +156,25 @@ function WatchItemModal({ open, watchItem, onClose }: WatchItemModalProps) {
                 }}
               />
             )}
+            {isMovie && movies[0]?.duration_minutes && (
+              <Chip
+                icon={<AccessTimeIcon />}
+                label={`${movies[0].duration_minutes} min`}
+                sx={{
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  color: 'white',
+                }}
+              />
+            )}
+            {isMovie && movies[0]?.director && (
+              <Chip
+                label={`Dir: ${movies[0].director}`}
+                sx={{
+                  bgcolor: 'rgba(255,255,255,0.1)',
+                  color: 'white',
+                }}
+              />
+            )}
           </Box>
 
           {/* Description */}
@@ -152,85 +182,119 @@ function WatchItemModal({ open, watchItem, onClose }: WatchItemModalProps) {
             {watchItem.description || 'No description available.'}
           </Typography>
 
-          {/* Movie: Play Button */}
-          {isMovie && (
-            <Button
-              variant="contained"
-              size="large"
-              startIcon={<PlayArrowIcon />}
-              onClick={handlePlayMovie}
-              sx={{
-                bgcolor: 'primary.main',
-                fontWeight: 600,
-                px: 4,
-                py: 1.5,
-                '&:hover': {
-                  bgcolor: 'primary.dark',
-                },
-              }}
-            >
-              Play Movie
-            </Button>
-          )}
-
-          {/* Series: Season Selector and Episodes */}
-          {!isMovie && mockSeasons.length > 0 && (
-            <Box>
-              <FormControl fullWidth sx={{ mb: 3 }}>
-                <InputLabel>Season</InputLabel>
-                <Select
-                  value={selectedSeason}
-                  label="Season"
-                  onChange={(e) => setSelectedSeason(e.target.value as number)}
+          {loadingDetails ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <>
+              {/* Movie: Play Button */}
+              {isMovie && movies.length > 0 && (
+                <Button
+                  variant="contained"
+                  size="large"
+                  startIcon={<PlayArrowIcon />}
+                  onClick={() => handlePlayMovie(movies[0].file_path || '')}
                   sx={{
-                    bgcolor: 'rgba(255,255,255,0.05)',
+                    bgcolor: 'primary.main',
+                    fontWeight: 600,
+                    px: 4,
+                    py: 1.5,
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                    },
                   }}
                 >
-                  {mockSeasons.map((season) => (
-                    <MenuItem key={season.number} value={season.number}>
-                      Season {season.number} ({season.episodes} episodes)
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  Play Movie
+                </Button>
+              )}
 
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Episodes
-              </Typography>
+              {isMovie && movies.length === 0 && (
+                <Typography color="text.secondary">
+                  Movie file not available.
+                </Typography>
+              )}
 
-              <List sx={{ bgcolor: 'rgba(255,255,255,0.02)', borderRadius: 1 }}>
-                {mockEpisodes.map((episode, index) => (
-                  <Box key={episode.number}>
-                    <ListItem disablePadding>
-                      <ListItemButton onClick={() => handlePlayEpisode(episode.number)}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', py: 1 }}>
-                          <Box
-                            sx={{
-                              width: 40,
-                              height: 40,
-                              borderRadius: 1,
-                              bgcolor: 'rgba(255,255,255,0.1)',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              mr: 2,
-                            }}
-                          >
-                            <PlayArrowIcon />
-                          </Box>
-                          <ListItemText
-                            primary={`${episode.number}. ${episode.title}`}
-                            secondary={episode.description}
-                            primaryTypographyProps={{ fontWeight: 600 }}
-                          />
+              {/* Series: Season Selector and Episodes */}
+              {!isMovie && seasons.length > 0 && (
+                <Box>
+                  <FormControl fullWidth sx={{ mb: 3 }}>
+                    <InputLabel>Season</InputLabel>
+                    <Select
+                      value={selectedSeason}
+                      label="Season"
+                      onChange={(e) => setSelectedSeason(e.target.value as number)}
+                      sx={{
+                        bgcolor: 'rgba(255,255,255,0.05)',
+                      }}
+                    >
+                      {seasons.map((season) => (
+                        <MenuItem key={season.season_number} value={season.season_number}>
+                          Season {season.season_number} ({season.episodes?.length || 0} episodes)
+                          {season.release_year && ` - ${season.release_year}`}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+
+                  {currentSeason?.description && (
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2, fontStyle: 'italic' }}>
+                      {currentSeason.description}
+                    </Typography>
+                  )}
+
+                  <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                    Episodes
+                  </Typography>
+
+                  {episodes.length > 0 ? (
+                    <List sx={{ bgcolor: 'rgba(255,255,255,0.02)', borderRadius: 1 }}>
+                      {episodes.map((episode, index) => (
+                        <Box key={episode.id || episode.episode_number}>
+                          <ListItem disablePadding>
+                            <ListItemButton onClick={() => handlePlayEpisode(episode.file_path || '', episode.episode_number || 0)}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', py: 1 }}>
+                                <Box
+                                  sx={{
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: 1,
+                                    bgcolor: 'rgba(255,255,255,0.1)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    mr: 2,
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  <PlayArrowIcon />
+                                </Box>
+                                <ListItemText
+                                  primary={`${episode.episode_number}. ${episode.title || `Episode ${episode.episode_number}`}`}
+                                  secondary={episode.description || 'No description available.'}
+                                  primaryTypographyProps={{ fontWeight: 600 }}
+                                />
+                              </Box>
+                            </ListItemButton>
+                          </ListItem>
+                          {index < episodes.length - 1 && <Divider />}
                         </Box>
-                      </ListItemButton>
-                    </ListItem>
-                    {index < mockEpisodes.length - 1 && <Divider />}
-                  </Box>
-                ))}
-              </List>
-            </Box>
+                      ))}
+                    </List>
+                  ) : (
+                    <Typography color="text.secondary">
+                      No episodes available for this season.
+                    </Typography>
+                  )}
+                </Box>
+              )}
+
+              {!isMovie && seasons.length === 0 && (
+                <Typography color="text.secondary">
+                  No seasons available for this series.
+                </Typography>
+              )}
+            </>
           )}
         </Box>
       </DialogContent>

@@ -4,6 +4,7 @@
 export const Routes = {
   GetRecommendations: '/recommendations',
   GetGenreByGenre: '/genre/{genre}',
+  GetWatchItemById: '/watch-item/{id}',
   GetHealth: '/health',
   PostSignup: '/auth/signup',
   PostLogin: '/auth/login',
@@ -41,4 +42,8 @@ export function buildPath<K extends RouteKey>(
 
 export function buildGetGenreByGenrePath(params: { genre: string | number }): string {
   return buildPath('GetGenreByGenre', params);
+}
+
+export function buildGetWatchItemByIdPath(params: { id: string | number }): string {
+  return buildPath('GetWatchItemById', params);
 }

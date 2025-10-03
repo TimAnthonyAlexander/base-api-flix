@@ -73,3 +73,38 @@ export type PostLogoutResponse = Envelope<{ message: string }>;
 export type GetMeResponse = Envelope<{ user: unknown[] }>;
 
 export type GetOpenApiResponse = Envelope<unknown>;
+
+export interface WatchItemMovie {
+  id?: string;
+  director?: string | null;
+  duration_minutes?: number | null;
+  file_path?: string;
+}
+
+export interface WatchItemEpisode {
+  id?: string;
+  episode_number?: number;
+  title?: string | null;
+  description?: string | null;
+  file_path?: string;
+}
+
+export interface WatchItemSeason {
+  id?: string;
+  season_number?: number;
+  description?: string | null;
+  release_year?: number | null;
+  episodes?: WatchItemEpisode[];
+}
+
+export interface WatchItemDetails extends WatchItem {
+  movies?: WatchItemMovie[];
+  seasons?: WatchItemSeason[];
+}
+
+export interface GetWatchItemByIdPathParams {
+  id: string;
+  [key: string]: string | number | null;
+}
+
+export type GetWatchItemByIdResponse = Envelope<WatchItemDetails>;

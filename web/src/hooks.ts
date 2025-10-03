@@ -302,6 +302,46 @@ export function useGetMe(options?: QueryOptions<Types.GetMeResponse>, deps?: Dep
 }
 
 /**
+ * React hook for GET /watch-item/{id}
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetWatchItemById(path: Types.GetWatchItemByIdPathParams, options?: QueryOptions<Types.GetWatchItemByIdResponse>, deps?: DependencyList): QueryResult<Types.GetWatchItemByIdResponse> {
+  const [data, setData] = useState<Types.GetWatchItemByIdResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  const enabled = options?.enabled ?? true;
+
+  const fetchData = useCallback(async () => {
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const result = await Api.getWatchItemById(path, options);
+      setData(result);
+      options?.onSuccess?.(result);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error);
+      options?.onError?.(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [enabled, JSON.stringify(path), ...(deps || [])]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error, refetch: fetchData };
+}
+
+/**
  * React hook for GET /openapi.json
  * Auto-fetches on mount and when dependencies change
  */

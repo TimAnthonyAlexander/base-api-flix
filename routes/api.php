@@ -9,6 +9,7 @@ use App\Controllers\MeController;
 use App\Controllers\SignupController;
 use App\Controllers\OpenApiController;
 use App\Controllers\RecommendationsController;
+use App\Controllers\WatchItemController;
 use BaseApi\Http\Middleware\RateLimitMiddleware;
 use App\Middleware\CombinedAuthMiddleware;
 
@@ -27,6 +28,14 @@ $router->get(
     [
         RateLimitMiddleware::class => ['limit' => '30/1m'],
         GenreController::class,
+    ],
+);
+
+$router->get(
+    '/watch-item/{id}',
+    [
+        RateLimitMiddleware::class => ['limit' => '30/1m'],
+        WatchItemController::class,
     ],
 );
 

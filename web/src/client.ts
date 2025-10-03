@@ -94,6 +94,16 @@ export async function getMe(options?: HttpOptions): Promise<Types.GetMeResponse>
 }
 
 /**
+ * GET /watch-item/{id}
+ * @tags Watch Items
+ */
+export async function getWatchItemById(path: Types.GetWatchItemByIdPathParams, options?: HttpOptions): Promise<Types.GetWatchItemByIdResponse> {
+  const url = buildPath('GetWatchItemById', path);
+
+  return http.get(url, options);
+}
+
+/**
  * GET /openapi.json
  * @tags API
  */
