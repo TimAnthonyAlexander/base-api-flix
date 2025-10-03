@@ -6,6 +6,25 @@ import { buildPath } from './routes';
 import * as Types from './types';
 
 /**
+ * GET /recommendations
+ * @tags API
+ */
+export async function getRecommendations(query?: Types.GetRecommendationsQueryParams, options?: HttpOptions): Promise<Types.GetRecommendationsResponse> {
+  const url = '/recommendations';
+  const searchParams = new URLSearchParams();
+  if (query) {
+    for (const [key, value] of Object.entries(query)) {
+      if (value !== undefined) {
+        searchParams.append(key, String(value));
+      }
+    }
+  }
+  const fullUrl = searchParams.toString() ? `${url}?${searchParams}` : url;
+
+  return http.get(fullUrl, options);
+}
+
+/**
  * GET /genre/{genre}
  * @tags Genres, Recommendations
  */

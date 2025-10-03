@@ -28,6 +28,43 @@ export interface MutationResult<T, TVariables> {
 }
 
 /**
+ * React hook for GET /recommendations
+ * Auto-fetches on mount and when dependencies change
+ */
+export function useGetRecommendations(query?: Types.GetRecommendationsQueryParams, options?: QueryOptions<Types.GetRecommendationsResponse>, deps?: DependencyList): QueryResult<Types.GetRecommendationsResponse> {
+  const [data, setData] = useState<Types.GetRecommendationsResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  const enabled = options?.enabled ?? true;
+
+  const fetchData = useCallback(async () => {
+    if (!enabled) return;
+    
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const result = await Api.getRecommendations(query, options);
+      setData(result);
+      options?.onSuccess?.(result);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      setError(error);
+      options?.onError?.(error);
+    } finally {
+      setLoading(false);
+    }
+  }, [enabled, JSON.stringify(query), ...(deps || [])]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error, refetch: fetchData };
+}
+
+/**
  * React hook for GET /genre/{genre}
  * Auto-fetches on mount and when dependencies change
  */

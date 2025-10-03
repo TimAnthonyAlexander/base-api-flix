@@ -15,6 +15,8 @@ export interface WatchItem {
   type: string;
   description?: string | null;
   release_year?: number | null;
+  rating?: number;
+  ratings_count?: number;
   id?: string;
   created_at?: string | null;
   updated_at?: string | null;
@@ -29,6 +31,13 @@ export interface User {
   created_at?: string | null;
   updated_at?: string | null;
 }
+
+export interface GetRecommendationsQueryParams {
+  limit?: number;
+  minRating?: number;
+}
+
+export type GetRecommendationsResponse = Envelope<unknown>;
 
 export interface GetGenreByGenrePathParams {
   genre: string;

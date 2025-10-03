@@ -6,6 +6,59 @@
         "description": "Generated API documentation"
     },
     "paths": {
+        "/recommendations": {
+            "get": {
+                "summary": "GET /recommendations",
+                "operationId": "getRecommendations",
+                "tags": [
+                    "API"
+                ],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "minRating",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            }
+        },
         "/genre/{genre}": {
             "get": {
                 "summary": "GET /genre/{genre}",
@@ -381,6 +434,12 @@
                     "release_year": {
                         "type": "integer",
                         "nullable": true
+                    },
+                    "rating": {
+                        "type": "number"
+                    },
+                    "ratings_count": {
+                        "type": "integer"
                     },
                     "id": {
                         "type": "string"

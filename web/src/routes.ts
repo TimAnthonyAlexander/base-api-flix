@@ -2,6 +2,7 @@
 // Do not edit manually - regenerate with: ./mason types:generate
 
 export const Routes = {
+  GetRecommendations: '/recommendations',
   GetGenreByGenre: '/genre/{genre}',
   GetHealth: '/health',
   PostSignup: '/auth/signup',
