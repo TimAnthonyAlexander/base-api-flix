@@ -1,4 +1,59 @@
 {
     "version": "1.0",
-    "migrations": []
+    "migrations": [
+        {
+            "id": "mig_f457ce453562",
+            "sql": "CREATE TABLE \"api_token\" (\n  \"user_id\" TEXT NOT NULL DEFAULT '',\n  \"name\" TEXT NOT NULL,\n  \"token_hash\" TEXT NOT NULL,\n  \"expires_at\" TEXT,\n  \"last_used_at\" TEXT,\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  FOREIGN KEY (\"user_id\") REFERENCES \"user\" (\"id\") ON DELETE CASCADE ON UPDATE CASCADE\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T16:37:55+00:00",
+            "table": "api_token",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_28f747136577",
+            "sql": "CREATE TABLE \"user\" (\n  \"name\" TEXT NOT NULL DEFAULT '',\n  \"password\" TEXT NOT NULL DEFAULT '',\n  \"email\" TEXT NOT NULL DEFAULT '',\n  \"active\" INTEGER NOT NULL DEFAULT '1',\n  \"id\" TEXT PRIMARY KEY NOT NULL DEFAULT '',\n  \"created_at\" DATETIME DEFAULT CURRENT_TIMESTAMP,\n  \"updated_at\" DATETIME DEFAULT CURRENT_TIMESTAMP\n)",
+            "destructive": false,
+            "generated_at": "2025-10-03T16:37:55+00:00",
+            "table": "user",
+            "operation": "create_table",
+            "warning": null
+        },
+        {
+            "id": "mig_0c966c4cee0d",
+            "sql": "CREATE UNIQUE INDEX \"uniq_api_token_token_hash\" ON \"api_token\" (\"token_hash\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T16:37:55+00:00",
+            "table": "api_token",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_15bd0d8e18a4",
+            "sql": "CREATE INDEX \"idx_api_token_user_id\" ON \"api_token\" (\"user_id\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T16:37:55+00:00",
+            "table": "api_token",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_967ce4f3fd34",
+            "sql": "CREATE UNIQUE INDEX \"uniq_user_email\" ON \"user\" (\"email\")",
+            "destructive": false,
+            "generated_at": "2025-10-03T16:37:55+00:00",
+            "table": "user",
+            "operation": "add_index",
+            "warning": null
+        },
+        {
+            "id": "mig_b93b059a8555",
+            "sql": "CREATE TABLE jobs (\n    id TEXT PRIMARY KEY,\n    queue TEXT NOT NULL DEFAULT 'default',\n    payload TEXT NOT NULL,\n    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'failed')),\n    attempts INTEGER NOT NULL DEFAULT 0,\n    error TEXT,\n    run_at DATETIME NOT NULL,\n    started_at DATETIME,\n    completed_at DATETIME,\n    failed_at DATETIME,\n    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Create essential indexes for queue performance\nCREATE INDEX jobs_queue_status_run_at_index ON jobs (queue, status, run_at);\nCREATE INDEX jobs_status_run_at_index ON jobs (status, run_at);\nCREATE INDEX jobs_status_index ON jobs (status);",
+            "destructive": false,
+            "generated_at": "2025-10-03T16:38:00+00:00",
+            "table": "jobs",
+            "operation": "create_table",
+            "description": "Create jobs table and indexes for queue system"
+        }
+    ]
 }
