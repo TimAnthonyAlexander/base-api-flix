@@ -13,7 +13,9 @@ function HorizontalSlider({ items, onItemClick }: HorizontalSliderProps) {
             sx={{
                 width: '100vw',
                 overflowX: 'auto',
+                overflowY: 'visible',
                 pb: 2,
+                py: 3,
                 px: { xs: 2, sm: 3, md: 6 },
                 display: 'flex',
                 gap: { xs: 2, sm: 3 },
