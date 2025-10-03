@@ -38,4 +38,3 @@ class WatchItem extends BaseModel
         return $this->hasMany(WatchItemSeason::class);
     }
 }
-

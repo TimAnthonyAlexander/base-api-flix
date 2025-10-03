@@ -207,6 +207,24 @@
             "table": "watch_item_movie",
             "operation": "add_index",
             "warning": null
+        },
+        {
+            "id": "mig_aae7c4549b74",
+            "sql": "ALTER TABLE \"watch_item_episode\" ADD COLUMN \"file_path\" TEXT NOT NULL DEFAULT ''",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:08:59+00:00",
+            "table": "watch_item_episode",
+            "operation": "add_column",
+            "warning": "Auto-generated default value '' for NOT NULL column without explicit default"
+        },
+        {
+            "id": "mig_be0bbeb6d1c9",
+            "sql": "ALTER TABLE \"watch_item_movie\" ADD COLUMN \"file_path\" TEXT NOT NULL DEFAULT ''",
+            "destructive": false,
+            "generated_at": "2025-10-03T18:08:59+00:00",
+            "table": "watch_item_movie",
+            "operation": "add_column",
+            "warning": "Auto-generated default value '' for NOT NULL column without explicit default"
         }
     ]
 }

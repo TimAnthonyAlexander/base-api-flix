@@ -33,4 +33,3 @@ class WatchItemSeason extends BaseModel
         return $this->belongsTo(WatchItem::class);
     }
 }
-

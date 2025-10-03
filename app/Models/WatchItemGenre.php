@@ -24,4 +24,3 @@ class WatchItemGenre extends BaseModel
         return $this->belongsTo(WatchItem::class);
     }
 }
-

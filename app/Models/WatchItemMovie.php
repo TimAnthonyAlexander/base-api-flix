@@ -16,6 +16,8 @@ class WatchItemMovie extends BaseModel
 
     public ?int $duration_minutes = null;
 
+    public string $file_path;
+
     public static array $indexes = [
         'watch_item_id' => 'index',
         'director' => 'index',
@@ -26,4 +28,3 @@ class WatchItemMovie extends BaseModel
         return $this->belongsTo(WatchItem::class);
     }
 }
-

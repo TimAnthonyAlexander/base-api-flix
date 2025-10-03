@@ -18,6 +18,8 @@ class WatchItemEpisode extends BaseModel
 
     public ?string $description = null;
 
+    public string $file_path;
+
     public static array $indexes = [
         'watch_item_season_id' => 'index',
         'episode_number' => 'index',
@@ -28,4 +30,3 @@ class WatchItemEpisode extends BaseModel
         return $this->belongsTo(WatchItemSeason::class);
     }
 }
-
