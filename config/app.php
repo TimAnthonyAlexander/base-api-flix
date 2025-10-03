@@ -109,6 +109,9 @@ return [
 
         // Whether to use persistent database connections (can improve performance)
         'persistent' => false,
+
+        // SQLite-specific: Enable foreign key constraints
+        'foreign_keys' => true,
     ],
 
     /*

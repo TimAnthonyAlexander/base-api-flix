@@ -68,6 +68,8 @@ for ($i = 0; $i < $count; $i++) {
     $item->release_year = $faker->optional(0.9)->numberBetween(1970, (int)date('Y')) ?? null;
     $item->rating = $faker->optional(0.8)->randomFloat(1, 1, 10) ?? 0.0;
     $item->ratings_count = $faker->optional(0.8)->numberBetween(1, 5000) ?? 0;
+    // Generate a unique poster URL using picsum.photos with consistent seed for stable images
+    $item->poster_url = sprintf('https://picsum.photos/seed/%s/300/450', $faker->unique()->bothify('poster####'));
     $item->save();
 
     $created['items']++;

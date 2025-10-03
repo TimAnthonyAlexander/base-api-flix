@@ -22,6 +22,8 @@ class WatchItem extends BaseModel
 
     public int $ratings_count = 0;
 
+    public ?string $poster_url = null;
+
     public static array $indexes = [
         'title' => 'index',
         'type' => 'index',

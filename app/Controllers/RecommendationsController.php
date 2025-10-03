@@ -49,11 +49,11 @@ class RecommendationsController extends Controller
             SELECT DISTINCT g.name, g.watch_item_id
             FROM ' . WatchItemGenre::table() . ' g
         )
-        SELECT name, id, title, type, description, release_year, rating
+        SELECT name, id, title, type, description, release_year, rating, poster_url
         FROM (
             SELECT
                 gi.name,
-                w.id, w.title, w.type, w.description, w.release_year, w.rating,
+                w.id, w.title, w.type, w.description, w.release_year, w.rating, w.poster_url,
                 ROW_NUMBER() OVER (
                     PARTITION BY gi.name
                     ORDER BY w.rating DESC, ' . $tieExpr . '
@@ -77,6 +77,7 @@ class RecommendationsController extends Controller
                 'description' => $row['description'],
                 'release_year' => $row['release_year'],
                 'rating' => (float)$row['rating'],
+                'poster_url' => $row['poster_url'] ?? null,
             ];
         }
 

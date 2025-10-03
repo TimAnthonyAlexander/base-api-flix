@@ -243,6 +243,15 @@
             "table": "watch_item",
             "operation": "add_column",
             "warning": null
+        },
+        {
+            "id": "mig_2a5e08c763dd",
+            "sql": "ALTER TABLE \"watch_item\" ADD COLUMN \"poster_url\" TEXT",
+            "destructive": false,
+            "generated_at": "2025-10-03T19:52:31+00:00",
+            "table": "watch_item",
+            "operation": "add_column",
+            "warning": null
         }
     ]
 }

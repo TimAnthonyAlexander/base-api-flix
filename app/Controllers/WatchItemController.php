@@ -31,6 +31,7 @@ class WatchItemController extends Controller
             'release_year' => $watchItem->release_year,
             'rating' => $watchItem->rating,
             'ratings_count' => $watchItem->ratings_count,
+            'poster_url' => $watchItem->poster_url,
             'created_at' => $watchItem->created_at,
             'updated_at' => $watchItem->updated_at,
         ];

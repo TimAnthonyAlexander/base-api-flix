@@ -26,8 +26,8 @@ function HomePage() {
     let genres: Genre[] = [];
     if (selectedGenre) {
         if (genreData?.data) {
-            const items: WatchItem[] = Array.isArray(genreData.data) 
-                ? (genreData.data as any as WatchItem[]) 
+            const items: WatchItem[] = Array.isArray(genreData.data)
+                ? (genreData.data as any as WatchItem[])
                 : [genreData.data as any as WatchItem];
             genres = [{ name: selectedGenre, items }];
         }
@@ -45,7 +45,7 @@ function HomePage() {
     const handleCloseModal = () => setSelectedWatchItem(null);
 
     return (
-        <Box sx={{ bgcolor: '#000', color: '#e5e5e5', minHeight: '100vh', width: '100%' }}>
+        <Box sx={{ bgcolor: '#000', color: '#e5e5e5', minHeight: '100vh', width: '100vw' }}>
             <AppBar
                 position="fixed"
                 elevation={0}
