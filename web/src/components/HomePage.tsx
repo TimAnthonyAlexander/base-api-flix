@@ -26,7 +26,9 @@ function HomePage() {
     let genres: Genre[] = [];
     if (selectedGenre) {
         if (genreData?.data) {
-            const items = Array.isArray(genreData.data) ? genreData.data : [genreData.data];
+            const items: WatchItem[] = Array.isArray(genreData.data) 
+                ? (genreData.data as any as WatchItem[]) 
+                : [genreData.data as any as WatchItem];
             genres = [{ name: selectedGenre, items }];
         }
     } else {
@@ -74,8 +76,8 @@ function HomePage() {
                 </Toolbar>
             </AppBar>
 
-            <Box sx={{ pt: '80px' }}>
-                <Box sx={{ px: { xs: 2, sm: 3, md: 6 }, py: { xs: 3, md: 4 } }}>
+            <Box sx={{ pt: '80px', width: '100%' }}>
+                <Box sx={{ px: { xs: 2, sm: 3, md: 6 }, py: { xs: 3, md: 4 }, width: '100%', boxSizing: 'border-box' }}>
                     {loadingRecommendations || loadingGenre ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
                             <Typography variant="h6" color="rgba(255,255,255,0.6)">Loading...</Typography>
@@ -100,7 +102,40 @@ function HomePage() {
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
                             <Typography variant="h6" color="rgba(255,255,255,0.6)">No content available</Typography>
                         </Box>
+                    ) : selectedGenre ? (
+                        // Grid view for genre page
+                        <Box sx={{ width: '100%' }}>
+                            <Typography
+                                variant="h4"
+                                sx={{
+                                    mb: 3,
+                                    fontWeight: 700,
+                                    letterSpacing: '-0.02em',
+                                    color: '#fafafa',
+                                }}
+                            >
+                                {selectedGenre}
+                            </Typography>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: { xs: 2, sm: 2.5, md: 3 },
+                                    pb: 4,
+                                    width: '100%',
+                                }}
+                            >
+                                {genres[0].items.map((item) => (
+                                    <WatchItemCard
+                                        key={item.id}
+                                        item={item}
+                                        onClick={() => handleWatchItemClick(item)}
+                                    />
+                                ))}
+                            </Box>
+                        </Box>
                     ) : (
+                        // Horizontal sliders for recommendations
                         <Box>
                             {genres.map((genre) => (
                                 <Box key={genre.name} sx={{ mb: { xs: 4, md: 6 } }}>
