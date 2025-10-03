@@ -45,10 +45,13 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
-                    transition: 'all 240ms cubic-bezier(0.2,0,0,1)',
+                    transition: 'box-shadow 240ms cubic-bezier(0.2,0,0,1)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    '.MuiBox-root:hover &': {
+                        boxShadow: '0 12px 40px rgba(0,0,0,0.7)',
+                    },
                 }}
             >
                 {!poster &&
@@ -63,7 +66,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                     sx={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.75) 45%, rgba(0,0,0,0) 100%)',
+                        background: 'linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)',
                         opacity: 0,
                         transition: 'opacity 240ms',
                         '.MuiBox-root:hover &': {
@@ -182,7 +185,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                 </Box>
             </Box>
 
-            {/* Hover shadow enhancement */}
+            {/* Hover accent glow */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -192,7 +195,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                     transition: 'box-shadow 240ms cubic-bezier(0.2,0,0,1)',
                     pointerEvents: 'none',
                     '.MuiBox-root:hover &': {
-                        boxShadow: '0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(147,112,219,0.3)',
+                        boxShadow: '0 0 0 1px rgba(147,112,219,0.4)',
                     },
                 }}
             />
