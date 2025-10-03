@@ -17,6 +17,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
     return (
         <Box
             onClick={onClick}
+            className="watch-item-card"
             sx={{
                 position: 'relative',
                 width: { xs: 280, sm: 340, md: 400 },
@@ -48,7 +49,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    '.MuiBox-root:hover &': {
+                    '.watch-item-card:hover &': {
                         boxShadow: '0 12px 40px rgba(0,0,0,0.7)',
                     },
                 }}
@@ -71,7 +72,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                         background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)',
                         opacity: 1,
                         transition: 'opacity 240ms',
-                        '.MuiBox-root:hover &': {
+                        '.watch-item-card:hover &': {
                             opacity: 0,
                         },
                     }}
@@ -87,7 +88,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                         p: { xs: 1.5, sm: 2 },
                         opacity: 1,
                         transition: 'opacity 240ms',
-                        '.MuiBox-root:hover &': {
+                        '.watch-item-card:hover &': {
                             opacity: 0,
                         },
                     }}
@@ -119,7 +120,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                         background: 'linear-gradient(90deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%)',
                         opacity: 0,
                         transition: 'opacity 240ms',
-                        '.MuiBox-root:hover &': {
+                        '.watch-item-card:hover &': {
                             opacity: 1,
                         },
                     }}
@@ -135,7 +136,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                     opacity: 0,
                     pointerEvents: 'none',
                     transition: 'opacity 240ms cubic-bezier(0.2,0,0,1)',
-                    '.MuiBox-root:hover &': {
+                    '.watch-item-card:hover &': {
                         opacity: 1,
                     },
                 }}
@@ -244,7 +245,7 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                     boxShadow: '0 0 0 0 rgba(147,112,219,0)',
                     transition: 'box-shadow 240ms cubic-bezier(0.2,0,0,1)',
                     pointerEvents: 'none',
-                    '.MuiBox-root:hover &': {
+                    '.watch-item-card:hover &': {
                         boxShadow: '0 0 0 1px rgba(147,112,219,0.4)',
                     },
                 }}
