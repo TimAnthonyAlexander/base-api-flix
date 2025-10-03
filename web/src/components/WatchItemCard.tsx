@@ -25,10 +25,9 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                 overflow: 'visible',
                 cursor: 'pointer',
                 flex: '0 0 auto',
-                // Hover expands width to show details
-                transition: 'width 280ms cubic-bezier(0.2,0,0,1)',
+                transition: 'transform 280ms cubic-bezier(0.2,0,0,1)',
                 '&:hover': {
-                    width: { xs: 420, sm: 520, md: 620 },
+                    transform: 'scale(1.15)',
                     zIndex: 10,
                 },
             }}
