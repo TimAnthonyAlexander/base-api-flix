@@ -17,11 +17,12 @@ class GenreController extends Controller
     #[ResponseType(['data' => WatchItem::class])]
     public function get(): JsonResponse
     {
-        $genreItems = WatchItemGenre::where('name', '=', $this->genre)->get();
+        $genreItems = WatchItemGenre::where('name', 'LIKE', $this->genre)->get();
 
         $watchItems = [];
 
         foreach ($genreItems as $genreItem) {
+            assert($genreItem instanceof WatchItemGenre);
             $watchItem = $genreItem->watchItem()->get();
 
             if ($watchItem) {
@@ -32,4 +33,3 @@ class GenreController extends Controller
         return new JsonResponse(['data' => $watchItems]);
     }
 }
-
