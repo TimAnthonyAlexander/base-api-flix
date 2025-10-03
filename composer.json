@@ -40,6 +40,7 @@
         "serve-api": "screen -dmS flix-api php mason serve",
         "serve-web": "cd web && screen -dmS flix-web npm run dev",
         "phpstan": "phpstan analyse --memory-limit=256M",
+        "types": "mason types:generate --all --bundle-dir=web/src/",
         "post-create-project-cmd": [
             "@php -r \"copy('.env.example', '.env');\"",
             "@php -r \"if (!is_dir('storage')) mkdir('storage', 0755, true);\"",
