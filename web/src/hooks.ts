@@ -39,7 +39,10 @@ export function useGetRecommendations(query?: Types.GetRecommendationsQueryParam
   const enabled = options?.enabled ?? true;
 
   const fetchData = useCallback(async () => {
-    if (!enabled) return;
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
     
     setLoading(true);
     setError(null);
@@ -76,7 +79,10 @@ export function useGetGenreByGenre(path: Types.GetGenreByGenrePathParams, option
   const enabled = options?.enabled ?? true;
 
   const fetchData = useCallback(async () => {
-    if (!enabled) return;
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
     
     setLoading(true);
     setError(null);
@@ -113,7 +119,10 @@ export function useGetHealth(query?: Types.GetHealthQueryParams, options?: Query
   const enabled = options?.enabled ?? true;
 
   const fetchData = useCallback(async () => {
-    if (!enabled) return;
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
     
     setLoading(true);
     setError(null);
@@ -264,7 +273,10 @@ export function useGetMe(options?: QueryOptions<Types.GetMeResponse>, deps?: Dep
   const enabled = options?.enabled ?? true;
 
   const fetchData = useCallback(async () => {
-    if (!enabled) return;
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
     
     setLoading(true);
     setError(null);
@@ -301,7 +313,10 @@ export function useGetOpenApi(options?: QueryOptions<Types.GetOpenApiResponse>, 
   const enabled = options?.enabled ?? true;
 
   const fetchData = useCallback(async () => {
-    if (!enabled) return;
+    if (!enabled) {
+      setLoading(false);
+      return;
+    }
     
     setLoading(true);
     setError(null);

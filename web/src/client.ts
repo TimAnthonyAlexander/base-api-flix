@@ -80,7 +80,7 @@ export async function postLogin(body: Types.PostLoginRequestBody, options?: Http
 export async function postLogout(options?: HttpOptions): Promise<Types.PostLogoutResponse> {
   const url = '/auth/logout';
 
-  return http.post(url, options);
+  return http.post(url, {}, options);
 }
 
 /**
