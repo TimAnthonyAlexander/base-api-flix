@@ -12,138 +12,125 @@ interface WatchItemCardProps {
 function WatchItemCard({ item, onClick }: WatchItemCardProps) {
     const isMovie = item.type === 'movie';
     const poster =
-        // adapt these keys to your API if needed
         (item as any).poster_url || (item as any).image || (item as any).thumbnail || null;
 
     return (
         <Box
+            onClick={onClick}
             sx={{
                 position: 'relative',
-                width: { xs: 160, sm: 200, md: 220 },
-                // maintain consistent height via aspect ratio
-                aspectRatio: '2 / 3',
+                width: { xs: 280, sm: 340, md: 400 },
+                height: { xs: 160, sm: 180, md: 200 },
                 borderRadius: 2,
                 overflow: 'visible',
-                flex: '0 0 auto',
-                // establish stacking context for hover layer
-                '&:hover .hover-card': { opacity: 1, transform: 'translateY(-12px) scale(1.06)' },
-                '&:hover .base': { boxShadow: '0 12px 40px rgba(0,0,0,0.6)' },
                 cursor: 'pointer',
+                flex: '0 0 auto',
+                // Hover expands width to show details
+                transition: 'width 280ms cubic-bezier(0.2,0,0,1)',
+                '&:hover': {
+                    width: { xs: 420, sm: 520, md: 620 },
+                    zIndex: 10,
+                },
             }}
-            onClick={onClick}
         >
-            {/* Base poster (keeps layout stable) */}
+            {/* Base landscape image */}
             <Box
-                className="base"
                 sx={{
                     position: 'absolute',
                     inset: 0,
                     borderRadius: 2,
                     overflow: 'hidden',
                     bgcolor: '#111',
+                    backgroundImage: poster ? `url(${poster})` : 'none',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                     boxShadow: '0 2px 12px rgba(0,0,0,0.4)',
-                    transition: 'box-shadow 220ms cubic-bezier(0.2,0,0,1)',
+                    transition: 'all 240ms cubic-bezier(0.2,0,0,1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
-                {/* Poster image or placeholder */}
+                {!poster &&
+                    (isMovie ? (
+                        <MovieIcon sx={{ fontSize: 56, color: 'rgba(255,255,255,0.2)' }} />
+                    ) : (
+                        <TvIcon sx={{ fontSize: 56, color: 'rgba(255,255,255,0.2)' }} />
+                    ))}
+
+                {/* Dark overlay on hover to make text readable */}
                 <Box
                     sx={{
                         position: 'absolute',
                         inset: 0,
-                        backgroundImage: poster ? `url(${poster})` : 'none',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        bgcolor: poster ? 'transparent' : 'rgba(255,255,255,0.06)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    {!poster &&
-                        (isMovie ? (
-                            <MovieIcon sx={{ fontSize: 48, color: 'rgba(255,255,255,0.28)' }} />
-                        ) : (
-                            <TvIcon sx={{ fontSize: 48, color: 'rgba(255,255,255,0.28)' }} />
-                        ))}
-                </Box>
-
-                {/* Subtle bottom gradient (no text in base state) */}
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        height: '36%',
-                        background:
-                            'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 38%, rgba(0,0,0,0.7) 100%)',
+                        background: 'linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.75) 45%, rgba(0,0,0,0) 100%)',
+                        opacity: 0,
+                        transition: 'opacity 240ms',
+                        '.MuiBox-root:hover &': {
+                            opacity: 1,
+                        },
                     }}
                 />
             </Box>
 
-            {/* Hover flyout (overlay that doesn’t shift layout) */}
+            {/* Details overlay (shown on hover) */}
             <Box
-                className="hover-card"
                 sx={{
                     position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: { xs: 280, sm: 320, md: 360 },
-                    // keep the anchor near the original poster
-                    transformOrigin: 'top left',
-                    transform: 'translateY(0) scale(1)',
+                    inset: 0,
+                    display: 'flex',
                     opacity: 0,
                     pointerEvents: 'none',
-                    transition: 'transform 180ms cubic-bezier(0.2,0,0,1), opacity 150ms',
-                    zIndex: 5,
-                    borderRadius: 2,
-                    overflow: 'hidden',
-                    boxShadow: '0 18px 48px rgba(0,0,0,0.7)',
-                    bgcolor: '#101010',
+                    transition: 'opacity 240ms cubic-bezier(0.2,0,0,1)',
+                    '.MuiBox-root:hover &': {
+                        opacity: 1,
+                    },
                 }}
             >
-                {/* Flyout header image */}
+                {/* Content area */}
                 <Box
                     sx={{
-                        height: { xs: 160, sm: 180, md: 200 },
-                        backgroundImage: poster ? `url(${poster})` : 'none',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        bgcolor: poster ? 'transparent' : 'rgba(255,255,255,0.06)',
+                        flex: 1,
                         display: 'flex',
-                        alignItems: 'center',
+                        flexDirection: 'column',
+                        p: { xs: 2, sm: 2.5, md: 3 },
+                        minWidth: 0,
                         justifyContent: 'center',
                     }}
                 >
-                    {!poster &&
-                        (isMovie ? (
-                            <MovieIcon sx={{ fontSize: 56, color: 'rgba(255,255,255,0.3)' }} />
-                        ) : (
-                            <TvIcon sx={{ fontSize: 56, color: 'rgba(255,255,255,0.3)' }} />
-                        ))}
-                </Box>
-
-                {/* Flyout content */}
-                <Box sx={{ p: 2 }}>
+                    {/* Title */}
                     <Typography
                         variant="h6"
-                        sx={{ fontWeight: 700, lineHeight: 1.2, mb: 1 }}
-                        noWrap
-                        title={item.title}
+                        sx={{
+                            fontWeight: 700,
+                            fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.4rem' },
+                            lineHeight: 1.2,
+                            mb: 1.5,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            color: '#fff',
+                            textShadow: '0 2px 8px rgba(0,0,0,0.6)',
+                        }}
                     >
                         {item.title}
                     </Typography>
 
-                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 1 }}>
+                    {/* Metadata */}
+                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 1.5, flexWrap: 'wrap' }}>
                         <Chip
                             size="small"
                             label={isMovie ? 'Movie' : 'Series'}
                             icon={isMovie ? <MovieIcon /> : <TvIcon />}
                             sx={{
-                                bgcolor: 'rgba(255,255,255,0.08)',
+                                bgcolor: 'rgba(255,255,255,0.15)',
+                                backdropFilter: 'blur(8px)',
                                 color: '#fff',
                                 height: 24,
-                                '& .MuiChip-icon': { fontSize: 16 },
+                                fontSize: '0.75rem',
+                                '& .MuiChip-icon': { fontSize: 16, color: 'rgba(255,255,255,0.9)' },
                             }}
                         />
                         {typeof item.rating === 'number' && item.rating > 0 && (
@@ -152,34 +139,63 @@ function WatchItemCard({ item, onClick }: WatchItemCardProps) {
                                 icon={<StarIcon sx={{ fontSize: 16 }} />}
                                 label={item.rating.toFixed(1)}
                                 sx={{
-                                    bgcolor: 'rgba(255,200,0,0.15)',
+                                    bgcolor: 'rgba(255,200,0,0.2)',
+                                    backdropFilter: 'blur(8px)',
                                     color: '#ffc800',
                                     height: 24,
+                                    fontSize: '0.75rem',
                                 }}
                             />
                         )}
                         {item.release_year && (
-                            <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                            <Typography
+                                variant="caption"
+                                sx={{
+                                    color: 'rgba(255,255,255,0.85)',
+                                    fontSize: '0.8rem',
+                                    fontWeight: 600,
+                                    textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+                                }}
+                            >
                                 {item.release_year}
                             </Typography>
                         )}
                     </Box>
 
+                    {/* Description */}
                     <Typography
                         variant="body2"
                         sx={{
-                            color: 'rgba(255,255,255,0.75)',
+                            color: 'rgba(255,255,255,0.9)',
+                            fontSize: { xs: '0.85rem', sm: '0.9rem' },
+                            lineHeight: 1.5,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
                             display: '-webkit-box',
                             WebkitLineClamp: 3,
                             WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            lineHeight: 1.4,
+                            textShadow: '0 1px 4px rgba(0,0,0,0.6)',
                         }}
                     >
                         {item.description || 'No description available.'}
                     </Typography>
                 </Box>
             </Box>
+
+            {/* Hover shadow enhancement */}
+            <Box
+                sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: 2,
+                    boxShadow: '0 0 0 0 rgba(147,112,219,0)',
+                    transition: 'box-shadow 240ms cubic-bezier(0.2,0,0,1)',
+                    pointerEvents: 'none',
+                    '.MuiBox-root:hover &': {
+                        boxShadow: '0 12px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(147,112,219,0.3)',
+                    },
+                }}
+            />
         </Box>
     );
 }
