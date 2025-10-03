@@ -12,51 +12,30 @@ use App\Middleware\CombinedAuthMiddleware;
 
 $router = App::router();
 
-// ================================
-// Public Endpoints (No Auth)
-// ================================
-
-// Health check
 $router->get('/health', [
     RateLimitMiddleware::class => ['limit' => '60/1m'],
     HealthController::class,
 ]);
 
-// ================================  
-// Authentication Endpoints
-// ================================
-
-// User registration
 $router->post('/auth/signup', [
     RateLimitMiddleware::class => ['limit' => '5/1m'],
     SignupController::class,
 ]);
 
-// User login
 $router->post('/auth/login', [
     RateLimitMiddleware::class => ['limit' => '10/1m'],
     LoginController::class,
 ]);
 
-// User logout (supports both session and API token auth)
 $router->post('/auth/logout', [
     CombinedAuthMiddleware::class,
     LogoutController::class,
 ]);
 
-// ================================
-// Protected Endpoints (Combined Auth)
-// ================================
-
-// Get current user info (supports both session and API token)
 $router->get('/me', [
     CombinedAuthMiddleware::class,
     MeController::class,
 ]);
-
-// ================================
-// Development Only
-// ================================
 
 if (App::config('app.env') === 'local') {
     // OpenAPI schema for API documentation
