@@ -3,45 +3,39 @@ import WatchItemCard from './WatchItemCard';
 import type { WatchItem } from '../types';
 
 interface HorizontalSliderProps {
-  items: WatchItem[];
-  onItemClick: (item: WatchItem) => void;
+    items: WatchItem[];
+    onItemClick: (item: WatchItem) => void;
 }
 
 function HorizontalSlider({ items, onItemClick }: HorizontalSliderProps) {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        gap: 2,
-        overflowX: 'auto',
-        pb: 2,
-        px: 2,
-        '&::-webkit-scrollbar': {
-          height: 8,
-        },
-        '&::-webkit-scrollbar-track': {
-          bgcolor: 'rgba(255,255,255,0.05)',
-          borderRadius: 4,
-        },
-        '&::-webkit-scrollbar-thumb': {
-          bgcolor: 'rgba(255,255,255,0.2)',
-          borderRadius: 4,
-          '&:hover': {
-            bgcolor: 'rgba(255,255,255,0.3)',
-          },
-        },
-      }}
-    >
-      {items.map((item) => (
-        <WatchItemCard 
-          key={item.id} 
-          item={item} 
-          onClick={() => onItemClick(item)} 
-        />
-      ))}
-    </Box>
-  );
+    return (
+        <Box
+            sx={{
+                width: '100vw',
+                overflowX: 'auto',
+                pb: 2,
+                px: { xs: 2, sm: 3, md: 6 },
+                display: 'flex',
+                gap: { xs: 2, sm: 3 },
+                scrollSnapType: 'x mandatory',
+                WebkitOverflowScrolling: 'touch',
+                '&::-webkit-scrollbar': { height: 0 },
+                scrollbarWidth: 'none',
+            }}
+        >
+            {items.map((item) => (
+                <Box
+                    key={item.id}
+                    sx={{
+                        scrollSnapAlign: 'start',
+                        flex: '0 0 auto',
+                    }}
+                >
+                    <WatchItemCard item={item} onClick={() => onItemClick(item)} />
+                </Box>
+            ))}
+        </Box>
+    );
 }
 
 export default HorizontalSlider;
-

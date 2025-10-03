@@ -1,5 +1,6 @@
+// HomePage.tsx
 import { useState } from 'react';
-import { Box, Container, Typography, AppBar, Toolbar } from '@mui/material';
+import { Box, Typography, AppBar, Toolbar } from '@mui/material';
 import { useGetRecommendations, useGetGenreByGenre } from '../hooks';
 import GenreSelector from './GenreSelector';
 import HorizontalSlider from './HorizontalSlider';
@@ -15,29 +16,19 @@ function HomePage() {
     const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
     const [selectedWatchItem, setSelectedWatchItem] = useState<WatchItem | null>(null);
 
-    // Fetch recommendations
-    const { data: recommendationsData, loading: loadingRecommendations, error: recommendationsError } = useGetRecommendations(
-        undefined,
-        { enabled: !selectedGenre }
-    );
+    const { data: recommendationsData, loading: loadingRecommendations, error: recommendationsError } =
+        useGetRecommendations(undefined, { enabled: !selectedGenre });
 
-    // Fetch genre items when a genre is selected
-    const { data: genreData, loading: loadingGenre, error: genreError } = useGetGenreByGenre(
-        { genre: selectedGenre || '' },
-        { enabled: !!selectedGenre }
-    );
+    const { data: genreData, loading: loadingGenre, error: genreError } =
+        useGetGenreByGenre({ genre: selectedGenre || '' }, { enabled: !!selectedGenre });
 
-    // Parse genres from recommendations or genre data
     let genres: Genre[] = [];
-
     if (selectedGenre) {
-        // Genre view - genreData.data.data contains the watch items array
         if (genreData?.data?.data) {
             const items = Array.isArray(genreData.data.data) ? genreData.data.data : [genreData.data.data];
             genres = [{ name: selectedGenre, items }];
         }
     } else {
-        // Recommendations view - recommendationsData.data.genres contains the array
         if (recommendationsData?.data) {
             const data = recommendationsData.data as any;
             genres = data.genres || [];
@@ -46,39 +37,30 @@ function HomePage() {
 
     const allGenreNames = (recommendationsData?.data as any)?.genres?.map((g: Genre) => g.name) || [];
 
-    const handleGenreSelect = (genre: string | null) => {
-        setSelectedGenre(genre);
-    };
-
-    const handleWatchItemClick = (item: WatchItem) => {
-        setSelectedWatchItem(item);
-    };
-
-    const handleCloseModal = () => {
-        setSelectedWatchItem(null);
-    };
+    const handleGenreSelect = (genre: string | null) => setSelectedGenre(genre);
+    const handleWatchItemClick = (item: WatchItem) => setSelectedWatchItem(item);
+    const handleCloseModal = () => setSelectedWatchItem(null);
 
     return (
-        <Box>
-            {/* Header */}
+        <Box sx={{ bgcolor: '#000', color: '#e5e5e5', minHeight: '100vh' }}>
             <AppBar
                 position="fixed"
                 elevation={0}
                 sx={{
-                    bgcolor: 'black',
-                    backdropFilter: 'blur(10px)',
+                    bgcolor: 'rgba(0,0,0,0.85)',
+                    backdropFilter: 'blur(12px)',
+                    borderBottom: '1px solid',
+                    borderColor: 'rgba(255,255,255,0.06)',
                 }}
             >
-                <Toolbar sx={{ minHeight: '80px !important' }}>
+                <Toolbar sx={{ minHeight: '80px !important', px: { xs: 2, sm: 3, md: 6 } }}>
                     <Typography
                         variant="h4"
-                        component="div"
                         sx={{
-                            flexGrow: 0,
-                            fontWeight: 700,
-                            mr: 6,
-                            color: 'primary.main',
+                            fontWeight: 800,
                             letterSpacing: '-0.02em',
+                            mr: 4,
+                            color: '#e50914',
                         }}
                     >
                         Flix
@@ -91,41 +73,48 @@ function HomePage() {
                 </Toolbar>
             </AppBar>
 
-            {/* Content */}
             <Box sx={{ pt: '80px' }}>
-                <Container maxWidth="xl" sx={{ py: 4 }}>
+                <Box sx={{ px: { xs: 2, sm: 3, md: 6 }, py: { xs: 3, md: 4 } }}>
                     {loadingRecommendations || loadingGenre ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-                            <Typography variant="h6" color="text.secondary">Loading...</Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+                            <Typography variant="h6" color="rgba(255,255,255,0.6)">Loading...</Typography>
                         </Box>
                     ) : recommendationsError || genreError ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px', flexDirection: 'column', gap: 2 }}>
-                            <Typography variant="h6" color="error">
-                                Error loading content
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                minHeight: 400,
+                                flexDirection: 'column',
+                                gap: 2,
+                            }}
+                        >
+                            <Typography variant="h6" color="#ff5656">Error loading content</Typography>
+                            <Typography variant="body2" color="rgba(255,255,255,0.6)">
                                 {recommendationsError?.message || genreError?.message}
                             </Typography>
                         </Box>
                     ) : genres.length === 0 ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-                            <Typography variant="h6" color="text.secondary">No content available</Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+                            <Typography variant="h6" color="rgba(255,255,255,0.6)">No content available</Typography>
                         </Box>
                     ) : (
                         <Box>
                             {genres.map((genre) => (
-                                <Box key={genre.name} sx={{ mb: 6 }}>
+                                <Box key={genre.name} sx={{ mb: { xs: 4, md: 6 } }}>
                                     <Typography
                                         variant="h5"
                                         sx={{
-                                            mb: 2,
-                                            ml: 2,
-                                            fontWeight: 600,
-                                            color: 'secondary.main',
+                                            mb: 1.5,
+                                            fontWeight: 700,
+                                            letterSpacing: '-0.015em',
+                                            color: '#fafafa',
                                         }}
                                     >
                                         {genre.name}
                                     </Typography>
+
                                     <HorizontalSlider
                                         items={genre.items}
                                         onItemClick={handleWatchItemClick}
@@ -134,30 +123,23 @@ function HomePage() {
                             ))}
                         </Box>
                     )}
-                </Container>
+                </Box>
             </Box>
 
-            {/* Watch Item Modal */}
-            <WatchItemModal
-                open={!!selectedWatchItem}
-                watchItem={selectedWatchItem}
-                onClose={handleCloseModal}
-            />
+            <WatchItemModal open={!!selectedWatchItem} watchItem={selectedWatchItem} onClose={handleCloseModal} />
 
-            {/* Footer */}
             <Box
                 component="footer"
                 sx={{
                     py: 4,
                     textAlign: 'center',
-                    color: 'text.secondary',
+                    color: 'rgba(255,255,255,0.6)',
                     borderTop: '1px solid',
-                    borderColor: 'divider',
+                    borderColor: 'rgba(255,255,255,0.08)',
+                    mt: 4,
                 }}
             >
-                <Typography variant="body2">
-                    Flix • Made by Tim Anthony Alexander
-                </Typography>
+                <Typography variant="body2">Flix • Made by Tim Anthony Alexander</Typography>
                 <Typography variant="caption" sx={{ display: 'block', mt: 1 }}>
                     Built with{' '}
                     <a
@@ -175,4 +157,3 @@ function HomePage() {
 }
 
 export default HomePage;
-

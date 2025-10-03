@@ -17,7 +17,7 @@ use BaseApi\Http\JsonResponse;
  */
 class RecommendationsController extends Controller
 {
-    public int $limit = 10;
+    public int $limit = 20;
 
     public float $minRating = 7.0;
 
